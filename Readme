@@ -1,7 +1,7 @@
 
 High level logic:
 
-1. We materialize the files from IMDB into an in memort datastructure at initialization time.We use TSVreader class to read files.
+1. We materialize the files from IMDB into an in memory data structure at initialization time.We use TSVreader class to read files.
 2. We use a system of hash maps as we are always searching based on id's of titles to store the title basic info, episodes info,
 rating info. We also use helper maps like reverse map or join map (e.g title to episode ids) to make the serving api as quick as possible.
 3. To tackle concurrency issues the api are either stateless or use concurrent data structures for shared state. Hence all the maps that we
@@ -15,16 +15,15 @@ How to run:
 
 
 Used Classes Summary:
-Api.java: Interface class for api
-ApiImpl.java: Implements Api interface
-TitleBasicInfo.java: POJO for title.basic.tsv
-TitleEpisode.java: POJO for title.episode.tsv
-TitleRating.java: POJO for title.rating.tsv
-TsvReader.java: util class for tsv file parsing
-InMemoryDataStore.java: This class when initialized reads all the required tsv files and initializes the in memory maps. It publishes
-    methods for helping implementation of Api.
-
-TestApi.java: junit test class.
+1. Api.java: Interface class for api
+2. ApiImpl.java: Implements Api interface
+3. TitleBasicInfo.java: POJO for title.basic.tsv
+4. TitleEpisode.java: POJO for title.episode.tsv
+5. TitleRating.java: POJO for title.rating.tsv
+6. TsvReader.java: util class for tsv file parsing
+7. InMemoryDataStore.java: This class when initialized reads all the required tsv files and initializes the in memory maps. It publishes
+methods for helping implementation of Api.
+8. TestApi.java: junit test class.
 
 
 

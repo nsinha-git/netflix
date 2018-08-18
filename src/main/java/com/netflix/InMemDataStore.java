@@ -45,7 +45,7 @@ public class InMemDataStore {
 
 
     public void readTitleBasic() throws Exception {
-        String file = this.getClass().getClassLoader().getResource("title_2017.tsv").getFile();
+        String file = this.getClass().getClassLoader().getResource("title.basic.2017.tsv").getFile();
         TsvReader tsvReader = new TsvReader(file);
         String[] components;
 
