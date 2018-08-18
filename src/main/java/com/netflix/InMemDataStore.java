@@ -15,7 +15,7 @@ public class InMemDataStore {
      */
     private Map<String, TitleBasicInfo> mapTitleIdToTitleBasicInfo = new ConcurrentHashMap<String, TitleBasicInfo>();
     private Set<String> setTitleIds = new HashSet<String>();
-    private Map<String, String> mapTitlesNamesToId = new  ConcurrentHashMap<String, String>();
+    public Map<String, String> mapTitlesNamesToId = new  ConcurrentHashMap<String, String>();
 
     /**
      * mapIdToEpisode is map of episode id to TitleEpisode

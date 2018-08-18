@@ -5,11 +5,11 @@ import org.slf4j.LoggerFactory;
 
 public class ApiImpl implements Api {
     Logger logger = LoggerFactory.getLogger(ApiImpl.class);
-    InMemDataStore readFilesAndInMemDataStore;
+    InMemDataStore inMemDataStore;
     private final String TV_SERIES = "tvSeries";
 
     public ApiImpl() throws Exception {
-        readFilesAndInMemDataStore = new InMemDataStore();
+        inMemDataStore = new InMemDataStore();
     }
 
     /**
@@ -19,11 +19,16 @@ public class ApiImpl implements Api {
      */
     public Double getRating(String id) {
         try {
-            return readFilesAndInMemDataStore.getFromMapTitleIdToRatings(id).getAverageRating();
+            return inMemDataStore.getFromMapTitleIdToRatings(id).getAverageRating();
         } catch(Exception e) {
             logger.error("id {} not found in rating map e:{}", id, e);
             return -1.0;
         }
+    }
+
+    public Double getRatingByName(String name) {
+        String id = inMemDataStore.mapTitlesNamesToId.get(name);
+        return getRating(id);
     }
 
     /**
@@ -35,10 +40,24 @@ public class ApiImpl implements Api {
      */
 
     public Double getRatingBySeason(String id, int season) {
-        return readFilesAndInMemDataStore.getSeasonRating(id, season);
+        return inMemDataStore.getSeasonRating(id, season);
+    }
+
+    /**
+     * The rating for a season of tv series is simply the average of ratings of all episodes of that series in the season.
+     * In case of any error we return the rating of the series as recorded by IMDB data.
+     * @param name of tvseries
+     * @param season
+     * @return
+     */
+
+
+    public Double getRatingBySeasonAndName(String name, int season) {
+        String id = inMemDataStore.mapTitlesNamesToId.get(name);
+        return getRatingBySeason(id, season);
     }
 
     public void updateRatingTitleId(String id, double rating) {
-        readFilesAndInMemDataStore.updateRatingEpisodeId(id, rating);
+        inMemDataStore.updateRatingEpisodeId(id, rating);
     }
 }

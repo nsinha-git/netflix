@@ -25,6 +25,9 @@ Used Classes Summary:
 methods for helping implementation of Api.
 8. TestApi.java: junit test class.
 
+Issues:
+1. This will not work as sizes of file increase. We will need to use distributed file system of databse like HBASE/HDFS in those cases.
+2. API is by tconst Id's only. The title name to id map
 
 
 Flow of program::
@@ -39,8 +42,8 @@ episodes belonging to the season. A title to season to ratings map structure is 
 
 
 Api:
-1. Api to read the imdb rating by id is provided.
-2. Api to read rating by id and season is provided. If id is a tvseries then season-title map in FlowOFProgram step 4 is used to provide
+1. Api to read the imdb rating by id  and titleName is provided.
+2. Api to read rating by id (also by Title Name) and season is provided. If id is a tvseries then season-title map in FlowOFProgram step 4 is used to provide
 answers.
 3.APi to update rating is provided. It updates the titleRating map. If title is found to be episode of a tv series
 then we recalculate season ratings of that title again.

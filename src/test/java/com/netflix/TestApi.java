@@ -14,6 +14,7 @@ public class TestApi {
     @Test
     public void test_movie_rating() {
         Assert.assertEquals(api.getRating("tt0806877"), (Double)8.3);
+        Assert.assertEquals(api.getRatingByName("Koombiyo"), (Double)9.9);
     }
 
 
@@ -24,6 +25,7 @@ public class TestApi {
     @Test
     public void test_tv_series_rating() {
         Assert.assertEquals(api.getRatingBySeason("tt7450814", 1), (Double)9.32280701754386);
+        Assert.assertEquals(api.getRatingBySeasonAndName("Koombiyo", 1), (Double)9.32280701754386);
         Assert.assertEquals(api.getRatingBySeason("tt7450814", 2), (Double)9.9);
         Assert.assertEquals(api.getRatingBySeason("tt7450814", 0), (Double)9.9);
         Assert.assertEquals(api.getRating("tt7450814"), (Double)9.9);
