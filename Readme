@@ -1,0 +1,57 @@
+
+High level logic:
+
+1. We materialize the files from IMDB into an in memort datastructure at initialization time.We use TSVreader class to read files.
+2. We use a system of hash maps as we are always searching based on id's of titles to store the title basic info, episodes info,
+rating info. We also use helper maps like reverse map or join map (e.g title to episode ids) to make the serving api as quick as possible.
+3. To tackle concurrency issues the api are either stateless or use concurrent data structures for shared state. Hence all the maps that we
+use, are concurrent maps.
+
+
+How to run:
+1. TestApi.java is junit test class to test the Api's. Please run `mvn test`.
+
+
+
+
+Used Classes Summary:
+Api.java: Interface class for api
+ApiImpl.java: Implements Api interface
+TitleBasicInfo.java: POJO for title.basic.tsv
+TitleEpisode.java: POJO for title.episode.tsv
+TitleRating.java: POJO for title.rating.tsv
+TsvReader.java: util class for tsv file parsing
+InMemoryDataStore.java: This class when initialized reads all the required tsv files and initializes the in memory maps. It publishes
+    methods for helping implementation of Api.
+
+TestApi.java: junit test class.
+
+
+
+Flow of program::
+1. InMemdataStore reads title.basic.tsv and initializes  a map containing ids against the titleBasiceInfo POJO. Also it creates a set of
+all id's for 2017 so that we can filter title not based on that year. We also maintain a titleName to id map to look titles by name.
+2. It then reads title.episodes.tsv and initializes the map with id against episode pojo(filters on 2017). It also creates a join map
+for tvseriesId to list of its episode ids to quickly look through episodes of a series.
+3. It then reads the ratings and initializes the id to rating pojo(filters on 2017).
+4.At last updateRatingBySeason() is called. It ges through every title in titleMap at step 1 and finds if the title is a tvseries.
+If yes, then it looks at all the episodes and groups them on season. It refers ratings map and calculates an average rating of all
+episodes belonging to the season. A title to season to ratings map structure is created.
+
+
+Api:
+1. Api to read the imdb rating by id is provided.
+2. Api to read rating by id and season is provided. If id is a tvseries then season-title map in FlowOFProgram step 4 is used to provide
+answers.
+3.APi to update rating is provided. It updates the titleRating map. If title is found to be episode of a tv series
+then we recalculate season ratings of that title again.
+
+
+Concurrency:
+1. Shared state are based on concurrent data structures. No explicit locks are used.
+
+
+Algorithm for Season rating:
+1. For a given season., all applicable episodes ratings are summed and then by divison a average is derived.
+This average rating is what is used for the season rating.
+
