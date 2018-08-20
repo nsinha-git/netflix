@@ -4,8 +4,8 @@ High level logic:
 1. We materialize the files from IMDB into an in memory data structure at initialization time.We use TSVreader class to read files.
 2. We use a system of hash maps as we are always searching based on id's of titles to store the title basic info, episodes info,
 rating info. We also use helper maps like reverse map or join map (e.g title to episode ids) to make the serving api as quick as possible.
-3. To tackle concurrency issues the api are either stateless or use concurrent data structures for shared state. Hence all the maps that we
-use, are concurrent maps.
+3. To tackle concurrency issues the api are either stateless or use concurrent data structures for shared state. Hence all the maps
+that we use, are concurrent maps.
 
 
 How to run:
@@ -21,13 +21,13 @@ Used Classes Summary:
 4. TitleEpisode.java: POJO for title.episode.tsv
 5. TitleRating.java: POJO for title.rating.tsv
 6. TsvReader.java: util class for tsv file parsing
-7. InMemoryDataStore.java: This class when initialized reads all the required tsv files and initializes the in memory maps. It publishes
-methods for helping implementation of Api.
+7. InMemoryDataStore.java: This class when initialized reads all the required tsv files and initializes the in memory maps. It
+ publishes methods for helping implementation of Api.
 8. TestApi.java: junit test class.
 
 Issues:
 1. This will not work as sizes of file increase. We will need to use distributed file system of databse like HBASE/HDFS in those cases.
-2. API is by tconst Id's only. The title name to id map
+2. API is by Id and name of Title.
 
 
 Flow of program::
@@ -43,10 +43,10 @@ episodes belonging to the season. A title to season to ratings map structure is 
 
 Api:
 1. Api to read the imdb rating by id  and titleName is provided.
-2. Api to read rating by id (also by Title Name) and season is provided. If id is a tvseries then season-title map in FlowOFProgram step 4 is used to provide
-answers.
-3.APi to update rating is provided. It updates the titleRating map. If title is found to be episode of a tv series
-then we recalculate season ratings of that title again.
+2. Api to read rating by id (also by Title Name) and season is provided. If id is a tvseries then season-title map in FlowOFProgram
+ step 4 is used to provide answers.
+3.Api to update rating is provided. It updates the titleRating map. If title is found to be episode of a tv series then we recalculate
+ season ratings of that title again.
 
 
 Concurrency:
